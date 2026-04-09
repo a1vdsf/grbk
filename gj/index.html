@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>外语学习记忆助手</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .brand-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+            background-color: #f0f0f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            overflow: hidden;
+        }
+        
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .company-name {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .description {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        .list-management {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        
+        .list-management h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .list-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .list-controls input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .list-controls button {
+            width: auto;
+            padding: 10px 15px;
+        }
+        
+        .saved-lists {
+            margin-top: 15px;
+        }
+        
+        .saved-lists h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .list-item:last-child {
+            border-bottom: none;
+        }
+        
+        .list-item span {
+            flex: 1;
+        }
+        
+        .list-item button {
+            width: auto;
+            padding: 5px 10px;
+            margin-left: 5px;
+            font-size: 14px;
+        }
+        
+        .delete-btn {
+            background-color: #e74c3c;
+        }
+        
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        .input-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .list-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .toggle-btn {
+            background-color: #95a5a6;
+            width: auto;
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+        
+        .word-list {
+            list-style-type: none;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .word-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .word-item:last-child {
+            border-bottom: none;
+        }
+        
+        .foreign-word {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .chinese-word {
+            color: #27ae60;
+        }
+        
+        .test-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+        
+        .test-card {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 20px;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: #2c3e50;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .test-mode-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .mode-btn {
+            flex: 1;
+            padding: 10px;
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            border: 2px solid transparent;
+        }
+        
+        .mode-btn.active {
+            background-color: #3498db;
+            color: white;
+            border-color: #2980b9;
+        }
+        
+        .test-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .test-actions button {
+            flex: 1;
+        }
+        
+        .reveal-btn {
+            background-color: #e67e22;
+        }
+        
+        .reveal-btn:hover {
+            background-color: #d35400;
+        }
+        
+        .next-btn {
+            background-color: #2ecc71;
+        }
+        
+        .next-btn:hover {
+            background-color: #27ae60;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .fade-out {
+            opacity: 0;
+            height: 0;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+            
+            .brand-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            .test-card {
+                font-size: 18px;
+                padding: 20px;
+            }
+            
+            .test-mode-selector {
+                flex-direction: column;
+            }
+            
+            .list-controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 品牌区域 -->
+    <div class="brand-section">
+        <div class="logo">
+			<img src="./css/logo.png" alt="" srcset="" />
+            <!-- 请在此处添加logo图片路径 -->
+            <!-- <img src="您的logo图片路径" alt="Logo"> -->
+        </div>
+        <div class="company-name">
+            Clyde Software Syndicate（克莱德软件联合体）
+        </div>
+    </div>
+    
+    <header>
+        <h1>外语学习记忆助手</h1>
+        <p class="description">添加外文和中文词对，然后测试你的记忆</p>
+    </header>
+    
+    <section class="list-management">
+        <h2>列表管理</h2>
+        <div class="list-controls">
+            <input type="text" id="list-name" placeholder="输入列表名称">
+            <button id="save-list-btn">保存列表</button>
+            <button id="new-list-btn">新建列表</button>
+        </div>
+        
+        <div class="saved-lists">
+            <h3>已保存的列表</h3>
+            <div id="saved-lists-container">
+                <!-- 已保存的列表将在这里显示 -->
+            </div>
+        </div>
+    </section>
+    
+    <section class="input-section">
+        <div class="input-group">
+            <label for="foreign-word">外文单词</label>
+            <input type="text" id="foreign-word" placeholder="输入外文单词或短语">
+        </div>
+        <div class="input-group">
+            <label for="chinese-word">中文翻译</label>
+            <input type="text" id="chinese-word" placeholder="输入对应的中文翻译">
+        </div>
+        <button id="add-btn">添加到列表</button>
+    </section>
+    
+    <section class="list-section" id="list-section">
+        <div class="list-header">
+            <h2 id="current-list-name">当前列表: 默认列表</h2>
+            <button class="toggle-btn" id="toggle-btn">隐藏列表</button>
+        </div>
+        <ul class="word-list" id="word-list">
+            <!-- 单词列表将通过JavaScript动态添加 -->
+        </ul>
+    </section>
+    
+    <section class="test-section">
+        <h2>记忆测试</h2>
+        
+        <div class="test-mode-selector">
+            <button class="mode-btn active" data-mode="random">随机测试</button>
+            <button class="mode-btn" data-mode="foreign">只显示外文</button>
+            <button class="mode-btn" data-mode="chinese">只显示中文</button>
+        </div>
+        
+        <div class="test-card" id="test-card">
+            请选择测试模式并开始测试
+        </div>
+        
+        <div class="test-actions">
+            <button id="start-test-btn">开始测试</button>
+            <button id="reveal-btn" class="reveal-btn hidden">显示答案</button>
+            <button id="next-btn" class="next-btn hidden">下一个</button>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取DOM元素
+            const foreignWordInput = document.getElementById('foreign-word');
+            const chineseWordInput = document.getElementById('chinese-word');
+            const addBtn = document.getElementById('add-btn');
+            const wordList = document.getElementById('word-list');
+            const toggleBtn = document.getElementById('toggle-btn');
+            const listSection = document.getElementById('list-section');
+            const testCard = document.getElementById('test-card');
+            const startTestBtn = document.getElementById('start-test-btn');
+            const revealBtn = document.getElementById('reveal-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const modeButtons = document.querySelectorAll('.mode-btn');
+            const listNameInput = document.getElementById('list-name');
+            const saveListBtn = document.getElementById('save-list-btn');
+            const newListBtn = document.getElementById('new-list-btn');
+            const savedListsContainer = document.getElementById('saved-lists-container');
+            const currentListNameElement = document.getElementById('current-list-name');
+            
+            // 存储单词对的数组
+            let wordPairs = [];
+            
+            // 当前测试的单词索引和显示状态
+            let currentTestIndex = -1;
+            let currentMode = 'random'; // 'random', 'foreign', 'chinese'
+            
+            // 当前列表名称
+            let currentListName = '默认列表';
+            
+            // 初始化 - 从本地存储加载数据
+            function init() {
+                loadSavedLists();
+                // 尝试加载默认列表
+                const defaultList = localStorage.getItem('默认列表');
+                if (defaultList) {
+                    wordPairs = JSON.parse(defaultList);
+                    updateWordListUI();
+                }
+            }
+            
+            // 保存列表到本地存储
+            function saveList() {
+                if (!currentListName) {
+                    alert('请输入列表名称！');
+                    return;
+                }
+                
+                if (wordPairs.length === 0) {
+                    alert('列表为空，无法保存！');
+                    return;
+                }
+                
+                localStorage.setItem(currentListName, JSON.stringify(wordPairs));
+                alert(`列表 "${currentListName}" 已保存！`);
+                loadSavedLists();
+            }
+            
+            // 从本地存储加载列表
+            function loadList(listName) {
+                const listData = localStorage.getItem(listName);
+                if (listData) {
+                    wordPairs = JSON.parse(listData);
+                    currentListName = listName;
+                    currentListNameElement.textContent = `当前列表: ${currentListName}`;
+                    updateWordListUI();
+                    
+                    // 重置测试状态
+                    resetTest();
+                    
+                    alert(`已加载列表 "${listName}"`);
+                }
+            }
+            
+            // 删除列表
+            function deleteList(listName) {
+                if (confirm(`确定要删除列表 "${listName}" 吗？`)) {
+                    localStorage.removeItem(listName);
+                    loadSavedLists();
+                    
+                    // 如果删除的是当前列表，清空当前列表
+                    if (listName === currentListName) {
+                        wordPairs = [];
+                        currentListName = '默认列表';
+                        currentListNameElement.textContent = `当前列表: ${currentListName}`;
+                        updateWordListUI();
+                        resetTest();
+                    }
+                }
+            }
+            
+            // 加载已保存的列表名称
+            function loadSavedLists() {
+                savedListsContainer.innerHTML = '';
+                
+                // 获取所有本地存储的键
+                const keys = Object.keys(localStorage);
+                
+                if (keys.length === 0) {
+                    savedListsContainer.innerHTML = '<p>暂无保存的列表</p>';
+                    return;
+                }
+                
+                keys.forEach(key => {
+                    // 跳过非列表数据（如果有的话）
+                    if (key.startsWith('__')) return;
+                    
+                    const listItem = document.createElement('div');
+                    listItem.className = 'list-item';
+                    listItem.innerHTML = `
+                        <span>${key}</span>
+                        <button class="load-btn" data-name="${key}">加载</button>
+                        <button class="delete-btn" data-name="${key}">删除</button>
+                    `;
+                    savedListsContainer.appendChild(listItem);
+                });
+                
+                // 添加加载和删除按钮的事件监听
+                document.querySelectorAll('.load-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const listName = this.getAttribute('data-name');
+                        loadList(listName);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const listName = this.getAttribute('data-name');
+                        deleteList(listName);
+                    });
+                });
+            }
+            
+            // 更新单词列表UI
+            function updateWordListUI() {
+                wordList.innerHTML = '';
+                
+                wordPairs.forEach(pair => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'word-item';
+                    listItem.innerHTML = `
+                        <span class="foreign-word">${pair.foreign}</span>
+                        <span class="chinese-word">${pair.chinese}</span>
+                    `;
+                    wordList.appendChild(listItem);
+                });
+                
+                // 如果列表是隐藏的，显示它
+                if (listSection.classList.contains('fade-out')) {
+                    listSection.classList.remove('fade-out');
+                    toggleBtn.textContent = '隐藏列表';
+                }
+            }
+            
+            // 重置测试状态
+            function resetTest() {
+                startTestBtn.classList.remove('hidden');
+                revealBtn.classList.add('hidden');
+                nextBtn.classList.add('hidden');
+                testCard.textContent = '请选择测试模式并开始测试';
+                currentTestIndex = -1;
+            }
+            
+            // 添加单词到列表
+            addBtn.addEventListener('click', function() {
+                const foreignWord = foreignWordInput.value.trim();
+                const chineseWord = chineseWordInput.value.trim();
+                
+                if (foreignWord && chineseWord) {
+                    // 添加到数组
+                    wordPairs.push({
+                        foreign: foreignWord,
+                        chinese: chineseWord
+                    });
+                    
+                    // 更新UI
+                    updateWordListUI();
+                    
+                    // 清空输入框
+                    foreignWordInput.value = '';
+                    chineseWordInput.value = '';
+                } else {
+                    alert('请填写完整的外文和中文！');
+                }
+            });
+            
+            // 切换列表显示/隐藏
+            toggleBtn.addEventListener('click', function() {
+                if (listSection.classList.contains('fade-out')) {
+                    listSection.classList.remove('fade-out');
+                    toggleBtn.textContent = '隐藏列表';
+                } else {
+                    listSection.classList.add('fade-out');
+                    toggleBtn.textContent = '显示列表';
+                }
+            });
+            
+            // 模式选择按钮
+            modeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    modeButtons.forEach(btn => btn.classList.remove('active'));
+                    // 为当前按钮添加active类
+                    this.classList.add('active');
+                    // 更新当前模式
+                    currentMode = this.getAttribute('data-mode');
+                    
+                    // 如果已经在测试中，立即应用新模式
+                    if (!startTestBtn.classList.contains('hidden')) {
+                        return;
+                    }
+                    
+                    // 根据新模式更新测试卡片
+                    if (currentTestIndex >= 0) {
+                        const pair = wordPairs[currentTestIndex];
+                        if (currentMode === 'random') {
+                            // 随机模式：随机显示外文或中文
+                            const isShowingForeign = Math.random() > 0.5;
+                            testCard.textContent = isShowingForeign ? pair.foreign : pair.chinese;
+                            testCard.style.color = isShowingForeign ? '#2c3e50' : '#27ae60';
+                        } else if (currentMode === 'foreign') {
+                            // 只显示外文模式
+                            testCard.textContent = pair.foreign;
+                            testCard.style.color = '#2c3e50';
+                        } else if (currentMode === 'chinese') {
+                            // 只显示中文模式
+                            testCard.textContent = pair.chinese;
+                            testCard.style.color = '#27ae60';
+                        }
+                    }
+                });
+            });
+            
+            // 保存列表按钮
+            saveListBtn.addEventListener('click', function() {
+                const newListName = listNameInput.value.trim();
+                if (newListName) {
+                    currentListName = newListName;
+                    currentListNameElement.textContent = `当前列表: ${currentListName}`;
+                    saveList();
+                    listNameInput.value = '';
+                } else {
+                    saveList();
+                }
+            });
+            
+            // 新建列表按钮
+            newListBtn.addEventListener('click', function() {
+                if (wordPairs.length > 0 && !confirm('当前列表尚未保存，确定要新建列表吗？')) {
+                    return;
+                }
+                
+                wordPairs = [];
+                currentListName = '新列表';
+                currentListNameElement.textContent = `当前列表: ${currentListName}`;
+                updateWordListUI();
+                resetTest();
+            });
+            
+            // 开始测试
+            startTestBtn.addEventListener('click', function() {
+                if (wordPairs.length === 0) {
+                    alert('请先添加一些单词到列表！');
+                    return;
+                }
+                
+                // 隐藏开始测试按钮，显示其他按钮
+                startTestBtn.classList.add('hidden');
+                revealBtn.classList.remove('hidden');
+                nextBtn.classList.remove('hidden');
+                
+                // 开始第一个测试
+                nextTest();
+            });
+            
+            // 显示答案
+            revealBtn.addEventListener('click', function() {
+                if (currentTestIndex >= 0) {
+                    const pair = wordPairs[currentTestIndex];
+                    
+                    // 根据当前模式显示答案
+                    if (currentMode === 'random') {
+                        // 如果是随机模式，显示相反的语言
+                        const currentText = testCard.textContent;
+                        if (currentText === pair.foreign) {
+                            testCard.textContent = pair.chinese;
+                            testCard.style.color = '#27ae60';
+                        } else {
+                            testCard.textContent = pair.foreign;
+                            testCard.style.color = '#2c3e50';
+                        }
+                    } else if (currentMode === 'foreign') {
+                        // 如果当前显示外文，则显示中文答案
+                        testCard.textContent = `${pair.foreign} - ${pair.chinese}`;
+                        testCard.style.color = '#2c3e50';
+                    } else if (currentMode === 'chinese') {
+                        // 如果当前显示中文，则显示外文答案
+                        testCard.textContent = `${pair.chinese} - ${pair.foreign}`;
+                        testCard.style.color = '#27ae60';
+                    }
+                }
+            });
+            
+            // 下一个测试
+            nextBtn.addEventListener('click', nextTest);
+            
+            // 下一个测试函数
+            function nextTest() {
+                if (wordPairs.length === 0) return;
+                
+                // 随机选择一个单词对
+                currentTestIndex = Math.floor(Math.random() * wordPairs.length);
+                const pair = wordPairs[currentTestIndex];
+                
+                // 根据当前模式显示内容
+                if (currentMode === 'random') {
+                    // 随机模式：随机显示外文或中文
+                    const isShowingForeign = Math.random() > 0.5;
+                    testCard.textContent = isShowingForeign ? pair.foreign : pair.chinese;
+                    testCard.style.color = isShowingForeign ? '#2c3e50' : '#27ae60';
+                } else if (currentMode === 'foreign') {
+                    // 只显示外文模式
+                    testCard.textContent = pair.foreign;
+                    testCard.style.color = '#2c3e50';
+                } else if (currentMode === 'chinese') {
+                    // 只显示中文模式
+                    testCard.textContent = pair.chinese;
+                    testCard.style.color = '#27ae60';
+                }
+            }
+            
+            // 支持按Enter键添加单词
+            foreignWordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    chineseWordInput.focus();
+                }
+            });
+            
+            chineseWordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addBtn.click();
+                }
+            });
+            
+            // 初始化应用
+            init();
+        });
+    </script>
+</body>
+</html>

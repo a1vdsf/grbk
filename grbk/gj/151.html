@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>越南语记事本 - 企业版</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .company-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            padding: 10px 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+            background-color: white;
+            border-radius: 10px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #4a6ee0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .company-name {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            color: white;
+            padding: 10px;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .app-container {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .app-branding {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #666;
+            z-index: 10;
+        }
+        
+        .app-branding .logo-small {
+            width: 20px;
+            height: 20px;
+            background-color: #4a6ee0;
+            border-radius: 4px;
+            margin-right: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.7rem;
+        }
+        
+        .note-area {
+            flex: 1;
+            padding: 20px;
+            border: none;
+            outline: none;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            resize: none;
+            background-color: #f9f9f9;
+            min-height: 200px;
+        }
+        
+        .keyboard-container {
+            background-color: #f0f0f0;
+            border-top: 1px solid #ddd;
+            padding: 10px;
+        }
+        
+        .keyboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 0 10px;
+        }
+        
+        .keyboard-title {
+            font-weight: bold;
+            color: #444;
+        }
+        
+        .keyboard-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .keyboard-controls button {
+            background: #4a6ee0;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        
+        .keyboard-controls button:active {
+            background: #3a5ec0;
+        }
+        
+        .keyboard {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            padding: 10px;
+        }
+        
+        .key {
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 12px 5px;
+            text-align: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.1s;
+            user-select: none;
+        }
+        
+        .key:active {
+            background-color: #e0e0e0;
+            transform: scale(0.95);
+        }
+        
+        .key.special {
+            background-color: #e6e6e6;
+            font-size: 1rem;
+        }
+        
+        .key.space {
+            grid-column: span 3;
+        }
+        
+        .key.backspace {
+            background-color: #ff6b6b;
+            color: white;
+        }
+        
+        .key.shift {
+            background-color: #4a6ee0;
+            color: white;
+        }
+        
+        .key.shift.active {
+            background-color: #2a4ec0;
+        }
+        
+        .key.symbols {
+            background-color: #6c5ce7;
+            color: white;
+        }
+        
+        .keyboard-pages {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        .page-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #bbb;
+        }
+        
+        .page-indicator.active {
+            background-color: #4a6ee0;
+        }
+        
+        .app-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+        
+        .action-btn {
+            background-color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            color: #4a6ee0;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .action-btn:active {
+            transform: translateY(2px);
+        }
+        
+        .action-btn.secondary {
+            background-color: #e6e6e6;
+            color: #666;
+        }
+        
+        .stats {
+            color: white;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .notes-list {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .notes-list.hidden {
+            display: none;
+        }
+        
+        .notes-list-content {
+            background-color: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 15px;
+            padding: 20px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .notes-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .notes-list-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .note-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .note-item:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .note-item:last-child {
+            border-bottom: none;
+        }
+        
+        .note-preview {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .note-date {
+            color: #999;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+        
+        .empty-notes {
+            text-align: center;
+            padding: 30px;
+            color: #999;
+        }
+        
+        .company-footer {
+            text-align: center;
+            margin-top: 15px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.8rem;
+        }
+        
+        @media (max-width: 480px) {
+            .keyboard {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .key.space {
+                grid-column: span 2;
+            }
+            
+            .app-footer {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .action-buttons {
+                display: flex;
+                gap: 10px;
+                width: 100%;
+            }
+            
+            .action-btn {
+                flex: 1;
+            }
+            
+            .company-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 公司标题栏 -->
+        <div class="company-header">
+            <div class="logo">
+                <!-- 这里可以放置公司Logo图片 -->
+                <img src="./css/46541.png" alt="公司Logo" style="width:100%;height:100%;object-fit:contain;">
+                
+            </div>
+            <div class="company-name">
+                <!-- 这里填写公司名称 -->
+                 Clyde Software Syndicate（克莱德软件联合体）
+            </div>
+        </div>
+        
+        <header>
+            <h1>越南语记事本 </h1>
+            <p class="subtitle">支持越南语所有字母状态、音标和大小写切换</p>
+        </header>
+        
+        <div class="app-container">
+            <!-- 应用内品牌标识 -->
+            <div class="app-branding">
+                <div class="logo-small">VTC</div>
+                <span>Clyde Software Syndicate（克莱德软件联合体）</span>
+            </div>
+            
+            <textarea class="note-area" placeholder="点击下方键盘开始输入..."></textarea>
+            
+            <div class="keyboard-container">
+                <div class="keyboard-header">
+                    <div class="keyboard-title">越南语键盘</div>
+                    <div class="keyboard-controls">
+                        <button id="hideKeyboard">隐藏键盘</button>
+                    </div>
+                </div>
+                
+                <div class="keyboard" id="keyboard">
+                    <!-- 键盘内容将通过JavaScript动态生成 -->
+                </div>
+                
+                <div class="keyboard-pages" id="keyboardPages">
+                    <!-- 页面指示器将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="app-footer">
+            <div class="action-buttons">
+                <button class="action-btn" id="saveBtn">
+                    <span>💾</span> 保存笔记
+                </button>
+                <button class="action-btn secondary" id="loadBtn">
+                    <span>📂</span> 读取笔记
+                </button>
+            </div>
+            <div class="stats">
+                <span id="charCount">0</span> 字符
+            </div>
+        </div>
+        
+        <!-- 公司页脚 -->
+        <div class="company-footer">
+            <!-- 这里可以放置公司版权信息等 -->
+            &copy; 1938 Clyde Software Syndicate（克莱德软件联合体） - 不存在的都是作者一个人写的
+        </div>
+    </div>
+
+    <!-- 笔记列表模态框 -->
+    <div class="notes-list hidden" id="notesList">
+        <div class="notes-list-content">
+            <div class="notes-list-header">
+                <div class="notes-list-title">保存的笔记</div>
+                <button class="close-btn" id="closeNotesList">&times;</button>
+            </div>
+            <div id="notesListContent">
+                <!-- 笔记列表内容将通过JavaScript动态生成 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 越南语字母及其所有可能的状态（大写）
+        const vietnameseLetters = {
+            'A': ['A', 'À', 'Á', 'Ả', 'Ã', 'Ạ', 'Ă', 'Ằ', 'Ắ', 'Ẳ', 'Ẵ', 'Ặ', 'Â', 'Ầ', 'Ấ', 'Ẩ', 'Ẫ', 'Ậ'],
+            'B': ['B'],
+            'C': ['C'],
+            'D': ['D', 'Đ'],
+            'E': ['E', 'È', 'É', 'Ẻ', 'Ẽ', 'Ẹ', 'Ê', 'Ề', 'Ế', 'Ể', 'Ễ', 'Ệ'],
+            'G': ['G'],
+            'H': ['H'],
+            'I': ['I', 'Ì', 'Í', 'Ỉ', 'Ĩ', 'Ị'],
+            'K': ['K'],
+            'L': ['L'],
+            'M': ['M'],
+            'N': ['N'],
+            'O': ['O', 'Ò', 'Ó', 'Ỏ', 'Õ', 'Ọ', 'Ô', 'Ồ', 'Ố', 'Ổ', 'Ỗ', 'Ộ', 'Ơ', 'Ờ', 'Ớ', 'Ở', 'Ỡ', 'Ợ'],
+            'P': ['P'],
+            'Q': ['Q'],
+            'R': ['R'],
+            'S': ['S'],
+            'T': ['T'],
+            'U': ['U', 'Ù', 'Ú', 'Ủ', 'Ũ', 'Ụ', 'Ư', 'Ừ', 'Ứ', 'Ử', 'Ữ', 'Ự'],
+            'V': ['V'],
+            'X': ['X'],
+            'Y': ['Y', 'Ỳ', 'Ý', 'Ỷ', 'Ỹ', 'Ỵ']
+        };
+
+        // 越南语字母及其所有可能的状态（小写）
+        const vietnameseLettersLowercase = {
+            'a': ['a', 'à', 'á', 'ả', 'ã', 'ạ', 'ă', 'ằ', 'ắ', 'ẳ', 'ẵ', 'ặ', 'â', 'ầ', 'ấ', 'ẩ', 'ẫ', 'ậ'],
+            'b': ['b'],
+            'c': ['c'],
+            'd': ['d', 'đ'],
+            'e': ['e', 'è', 'é', 'ẻ', 'ẽ', 'ẹ', 'ê', 'ề', 'ế', 'ể', 'ễ', 'ệ'],
+            'g': ['g'],
+            'h': ['h'],
+            'i': ['i', 'ì', 'í', 'ỉ', 'ĩ', 'ị'],
+            'k': ['k'],
+            'l': ['l'],
+            'm': ['m'],
+            'n': ['n'],
+            'o': ['o', 'ò', 'ó', 'ỏ', 'õ', 'ọ', 'ô', 'ồ', 'ố', 'ổ', 'ỗ', 'ộ', 'ơ', 'ờ', 'ớ', 'ở', 'ỡ', 'ợ'],
+            'p': ['p'],
+            'q': ['q'],
+            'r': ['r'],
+            's': ['s'],
+            't': ['t'],
+            'u': ['u', 'ù', 'ú', 'ủ', 'ũ', 'ụ', 'ư', 'ừ', 'ứ', 'ử', 'ữ', 'ự'],
+            'v': ['v'],
+            'x': ['x'],
+            'y': ['y', 'ỳ', 'ý', 'ỷ', 'ỹ', 'ỵ']
+        };
+
+        // 越南语音标
+        const vietnameseSymbols = [
+            'à', 'á', 'ả', 'ã', 'ạ', 'â', 'ă', 'ằ', 'ắ', 'ẳ', 'ẵ', 'ặ',
+            'è', 'é', 'ẻ', 'ẽ', 'ẹ', 'ê', 'ề', 'ế', 'ể', 'ễ', 'ệ',
+            'ì', 'í', 'ỉ', 'ĩ', 'ị',
+            'ò', 'ó', 'ỏ', 'õ', 'ọ', 'ô', 'ơ', 'ồ', 'ố', 'ổ', 'ỗ', 'ộ', 'ờ', 'ớ', 'ở', 'ỡ', 'ợ',
+            'ù', 'ú', 'ủ', 'ũ', 'ụ', 'ư', 'ừ', 'ứ', 'ử', 'ữ', 'ự',
+            'ỳ', 'ý', 'ỷ', 'ỹ', 'ỵ', 'đ'
+        ];
+
+        // 特殊功能键
+        const specialKeys = [
+            { label: '←', value: 'backspace', class: 'backspace' },
+            { label: '大写', value: 'shift', class: 'shift' },
+            { label: '空格', value: ' ', class: 'space' },
+            { label: '换行', value: '\n', class: 'special' },
+            { label: '音标', value: 'symbols', class: 'symbols' }
+        ];
+
+        // 当前页面和每页显示的字母数
+        let currentPage = 0;
+        const lettersPerPage = 10;
+        
+        // 键盘状态
+        let isUppercase = true;
+        let isSymbolsMode = false;
+        
+        // 获取DOM元素
+        const noteArea = document.querySelector('.note-area');
+        const keyboard = document.getElementById('keyboard');
+        const keyboardPages = document.getElementById('keyboardPages');
+        const hideKeyboardBtn = document.getElementById('hideKeyboard');
+        const saveBtn = document.getElementById('saveBtn');
+        const loadBtn = document.getElementById('loadBtn');
+        const charCount = document.getElementById('charCount');
+        const notesList = document.getElementById('notesList');
+        const closeNotesList = document.getElementById('closeNotesList');
+        const notesListContent = document.getElementById('notesListContent');
+        
+        // 初始化键盘
+        function initKeyboard() {
+            renderKeyboard();
+            renderPageIndicators();
+            
+            // 添加事件监听器
+            hideKeyboardBtn.addEventListener('click', toggleKeyboard);
+            saveBtn.addEventListener('click', saveNote);
+            loadBtn.addEventListener('click', showNotesList);
+            closeNotesList.addEventListener('click', hideNotesList);
+            noteArea.addEventListener('input', updateCharCount);
+            
+            // 初始化字符计数
+            updateCharCount();
+            
+            // 加载自动保存的内容
+            loadAutoSave();
+        }
+        
+        // 渲染键盘
+        function renderKeyboard() {
+            keyboard.innerHTML = '';
+            
+            if (isSymbolsMode) {
+                renderSymbolsKeyboard();
+                return;
+            }
+            
+            // 获取当前页面的字母
+            const letterKeys = isUppercase ? 
+                Object.keys(vietnameseLetters) : 
+                Object.keys(vietnameseLettersLowercase);
+                
+            const startIndex = currentPage * lettersPerPage;
+            const endIndex = Math.min(startIndex + lettersPerPage, letterKeys.length);
+            const currentLetters = letterKeys.slice(startIndex, endIndex);
+            
+            // 添加字母键
+            currentLetters.forEach(letter => {
+                const key = document.createElement('div');
+                key.className = 'key';
+                key.textContent = letter;
+                key.addEventListener('click', () => {
+                    showLetterVariations(letter);
+                });
+                keyboard.appendChild(key);
+            });
+            
+            // 添加特殊功能键
+            specialKeys.forEach(specialKey => {
+                const key = document.createElement('div');
+                key.className = `key ${specialKey.class}`;
+                key.textContent = specialKey.label;
+                
+                // 高亮显示当前激活的状态
+                if (specialKey.value === 'shift' && isUppercase) {
+                    key.classList.add('active');
+                }
+                
+                key.addEventListener('click', () => {
+                    handleSpecialKey(specialKey.value);
+                });
+                keyboard.appendChild(key);
+            });
+        }
+        
+        // 渲染音标键盘
+        function renderSymbolsKeyboard() {
+            keyboard.innerHTML = '';
+            
+            // 添加返回按钮
+            const backBtn = document.createElement('div');
+            backBtn.className = 'key special';
+            backBtn.textContent = '返回';
+            backBtn.addEventListener('click', () => {
+                isSymbolsMode = false;
+                renderKeyboard();
+                renderPageIndicators();
+            });
+            keyboard.appendChild(backBtn);
+            
+            // 添加音标键
+            vietnameseSymbols.forEach(symbol => {
+                const key = document.createElement('div');
+                key.className = 'key';
+                key.textContent = symbol;
+                key.addEventListener('click', () => {
+                    insertText(symbol);
+                });
+                keyboard.appendChild(key);
+            });
+            
+            // 添加占位键以保持布局
+            const remainingKeys = 20 - vietnameseSymbols.length - 1; // 减去返回按钮
+            for (let i = 0; i < remainingKeys; i++) {
+                const placeholder = document.createElement('div');
+                placeholder.className = 'key';
+                placeholder.style.visibility = 'hidden';
+                keyboard.appendChild(placeholder);
+            }
+        }
+        
+        // 显示字母的变体
+        function showLetterVariations(letter) {
+            const variations = isUppercase ? 
+                vietnameseLetters[letter] : 
+                vietnameseLettersLowercase[letter];
+            
+            // 清空键盘
+            keyboard.innerHTML = '';
+            
+            // 添加返回按钮
+            const backBtn = document.createElement('div');
+            backBtn.className = 'key special';
+            backBtn.textContent = '返回';
+            backBtn.addEventListener('click', () => {
+                renderKeyboard();
+            });
+            keyboard.appendChild(backBtn);
+            
+            // 添加字母变体
+            variations.forEach(variation => {
+                const key = document.createElement('div');
+                key.className = 'key';
+                key.textContent = variation;
+                key.addEventListener('click', () => {
+                    insertText(variation);
+                    renderKeyboard(); // 输入后返回主键盘
+                });
+                keyboard.appendChild(key);
+            });
+            
+            // 添加占位键以保持布局
+            const remainingKeys = 20 - variations.length - 1; // 减去返回按钮
+            for (let i = 0; i < remainingKeys; i++) {
+                const placeholder = document.createElement('div');
+                placeholder.className = 'key';
+                placeholder.style.visibility = 'hidden';
+                keyboard.appendChild(placeholder);
+            }
+        }
+        
+        // 处理特殊键
+        function handleSpecialKey(key) {
+            switch(key) {
+                case 'backspace':
+                    noteArea.value = noteArea.value.slice(0, -1);
+                    break;
+                case 'shift':
+                    isUppercase = !isUppercase;
+                    renderKeyboard();
+                    break;
+                case 'symbols':
+                    isSymbolsMode = true;
+                    renderKeyboard();
+                    // 隐藏页面指示器
+                    keyboardPages.innerHTML = '';
+                    break;
+                default:
+                    insertText(key);
+            }
+            updateCharCount();
+            autoSave();
+        }
+        
+        // 插入文本
+        function insertText(text) {
+            const start = noteArea.selectionStart;
+            const end = noteArea.selectionEnd;
+            noteArea.value = noteArea.value.substring(0, start) + text + noteArea.value.substring(end);
+            noteArea.focus();
+            noteArea.selectionStart = noteArea.selectionEnd = start + text.length;
+            autoSave();
+        }
+        
+        // 渲染页面指示器
+        function renderPageIndicators() {
+            keyboardPages.innerHTML = '';
+            
+            if (isSymbolsMode) return;
+            
+            const letterKeys = isUppercase ? 
+                Object.keys(vietnameseLetters) : 
+                Object.keys(vietnameseLettersLowercase);
+                
+            const totalPages = Math.ceil(letterKeys.length / lettersPerPage);
+            
+            for (let i = 0; i < totalPages; i++) {
+                const indicator = document.createElement('div');
+                indicator.className = `page-indicator ${i === currentPage ? 'active' : ''}`;
+                indicator.addEventListener('click', () => {
+                    currentPage = i;
+                    renderKeyboard();
+                    renderPageIndicators();
+                });
+                keyboardPages.appendChild(indicator);
+            }
+        }
+        
+        // 切换键盘显示/隐藏
+        function toggleKeyboard() {
+            const keyboardContainer = document.querySelector('.keyboard-container');
+            if (keyboardContainer.style.display === 'none') {
+                keyboardContainer.style.display = 'block';
+                hideKeyboardBtn.textContent = '隐藏键盘';
+            } else {
+                keyboardContainer.style.display = 'none';
+                hideKeyboardBtn.textContent = '显示键盘';
+            }
+        }
+        
+        // 保存笔记到本地存储
+        function saveNote() {
+            if (noteArea.value.trim() === '') {
+                alert('请输入内容后再保存');
+                return;
+            }
+            
+            // 获取当前时间
+            const now = new Date();
+            const timestamp = now.getTime();
+            const dateString = now.toLocaleString('vi-VN');
+            
+            // 创建笔记对象
+            const note = {
+                id: timestamp,
+                content: noteArea.value,
+                date: dateString,
+                preview: noteArea.value.substring(0, 50) + (noteArea.value.length > 50 ? '...' : '')
+            };
+            
+            // 获取现有的笔记列表
+            let notes = JSON.parse(localStorage.getItem('vietnameseNotes')) || [];
+            
+            // 添加新笔记
+            notes.unshift(note);
+            
+            // 保存到本地存储
+            localStorage.setItem('vietnameseNotes', JSON.stringify(notes));
+            
+            // 清空自动保存
+            localStorage.removeItem('vietnameseAutoSave');
+            
+            // 显示成功消息
+            alert('笔记已保存！');
+        }
+        
+        // 自动保存当前内容
+        function autoSave() {
+            const autoSaveData = {
+                content: noteArea.value,
+                timestamp: new Date().getTime()
+            };
+            localStorage.setItem('vietnameseAutoSave', JSON.stringify(autoSaveData));
+        }
+        
+        // 加载自动保存的内容
+        function loadAutoSave() {
+            const autoSaveData = JSON.parse(localStorage.getItem('vietnameseAutoSave'));
+            if (autoSaveData && autoSaveData.content) {
+                // 检查自动保存的时间，如果太旧则不加载
+                const now = new Date().getTime();
+                const timeDiff = now - autoSaveData.timestamp;
+                const hoursDiff = timeDiff / (1000 * 60 * 60);
+                
+                // 如果自动保存的内容在24小时内，则询问用户是否加载
+                if (hoursDiff < 24) {
+                    if (confirm('检测到未保存的草稿，是否加载？')) {
+                        noteArea.value = autoSaveData.content;
+                        updateCharCount();
+                    }
+                }
+            }
+        }
+        
+        // 显示笔记列表
+        function showNotesList() {
+            // 获取笔记列表
+            const notes = JSON.parse(localStorage.getItem('vietnameseNotes')) || [];
+            
+            // 清空笔记列表内容
+            notesListContent.innerHTML = '';
+            
+            if (notes.length === 0) {
+                // 显示空状态
+                const emptyState = document.createElement('div');
+                emptyState.className = 'empty-notes';
+                emptyState.textContent = '暂无保存的笔记';
+                notesListContent.appendChild(emptyState);
+            } else {
+                // 添加笔记项
+                notes.forEach(note => {
+                    const noteItem = document.createElement('div');
+                    noteItem.className = 'note-item';
+                    noteItem.innerHTML = `
+                        <div>笔记 ${new Date(note.id).toLocaleDateString('vi-VN')}</div>
+                        <div class="note-preview">${note.preview}</div>
+                        <div class="note-date">${note.date}</div>
+                    `;
+                    noteItem.addEventListener('click', () => {
+                        loadNote(note.id);
+                        hideNotesList();
+                    });
+                    notesListContent.appendChild(noteItem);
+                });
+            }
+            
+            // 显示笔记列表
+            notesList.classList.remove('hidden');
+        }
+        
+        // 隐藏笔记列表
+        function hideNotesList() {
+            notesList.classList.add('hidden');
+        }
+        
+        // 加载特定笔记
+        function loadNote(noteId) {
+            const notes = JSON.parse(localStorage.getItem('vietnameseNotes')) || [];
+            const note = notes.find(n => n.id === noteId);
+            
+            if (note) {
+                noteArea.value = note.content;
+                updateCharCount();
+                // 清空自动保存
+                localStorage.removeItem('vietnameseAutoSave');
+            } else {
+                alert('加载笔记失败');
+            }
+        }
+        
+        // 更新字符计数
+        function updateCharCount() {
+            charCount.textContent = noteArea.value.length;
+        }
+        
+        // 初始化应用
+        document.addEventListener('DOMContentLoaded', initKeyboard);
+    </script>
+</body>
+</html>
